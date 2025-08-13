@@ -11,13 +11,15 @@ export const colors = {
   transparent: 'transparent',
 } as const;
 
+import { responsiveSpacing } from './responsive';
+
 export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
+  xs: responsiveSpacing(4),
+  sm: responsiveSpacing(8),
+  md: responsiveSpacing(16),
+  lg: responsiveSpacing(24),
+  xl: responsiveSpacing(32),
+  xxl: responsiveSpacing(48),
 } as const;
 
 export type ColorKey = keyof typeof colors;

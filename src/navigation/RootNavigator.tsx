@@ -30,7 +30,7 @@ const TabNavigator = () => {
             iconName = 'circle';
           }
 
-          return <TabBarIcon name={iconName} focused={focused} size={size} />;
+          return <TabBarIcon name={iconName} focused={focused} size="medium" />;
         },
         tabBarActiveTintColor: colors.accent,
         tabBarInactiveTintColor: colors.textSecondary,

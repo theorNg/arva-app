@@ -12,7 +12,9 @@ import { Feather } from '@expo/vector-icons';
 import { colors, spacing } from '../theme/colors';
 import { typography } from '../theme/typography';
 import { ProgressBar } from '../components/ProgressBar';
+import { AnimatedBarChart } from '../components/AnimatedBarChart';
 import { useBatteryStore } from '../store/useBatteryStore';
+import { getSafeAreaPadding, responsiveValues } from '../theme/responsive';
 
 export const BatteryScreen: React.FC = () => {
   const { data, isLoading, error, fetchBatteryData } = useBatteryStore();
@@ -117,12 +119,16 @@ export const BatteryScreen: React.FC = () => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Last 30 days</Text>
           <View style={styles.chartContainer}>
-            <View style={styles.chartPlaceholder}>
-              <Text style={styles.chartPlaceholderText}>Chart data visualization</Text>
-              <Text style={styles.chartPlaceholderSubtext}>
-                {data?.history?.length || 0} data points available
-              </Text>
-            </View>
+            {data?.history && data.history.length > 0 ? (
+              <AnimatedBarChart data={data.history} />
+            ) : (
+              <View style={styles.chartPlaceholder}>
+                <Text style={styles.chartPlaceholderText}>No data available</Text>
+                <Text style={styles.chartPlaceholderSubtext}>
+                  Battery history will appear here
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </ScrollView>
@@ -137,7 +143,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: getSafeAreaPadding().horizontal,
   },
   loadingContainer: {
     flex: 1,
@@ -175,7 +181,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: spacing.lg,
+    paddingVertical: responsiveValues.headerPadding,
+    minHeight: responsiveValues.headerHeight,
   },
   title: {
     ...typography.h1,
@@ -235,8 +242,8 @@ const styles = StyleSheet.create({
   },
   chartContainer: {
     backgroundColor: colors.card,
-    borderRadius: 12,
-    padding: spacing.md,
+    borderRadius: responsiveValues.cardBorderRadius,
+    padding: responsiveValues.cardPadding,
     alignItems: 'center',
   },
   chartPlaceholder: {

@@ -1,40 +1,41 @@
 import { Platform } from 'react-native';
+import { responsiveFontSize } from './responsive';
 
 export const typography = {
   h1: {
-    fontSize: 32,
+    fontSize: responsiveFontSize(32),
     fontWeight: 'bold' as const,
-    lineHeight: 40,
+    lineHeight: responsiveFontSize(40),
   },
   h2: {
-    fontSize: 24,
+    fontSize: responsiveFontSize(24),
     fontWeight: 'bold' as const,
-    lineHeight: 32,
+    lineHeight: responsiveFontSize(32),
   },
   h3: {
-    fontSize: 20,
+    fontSize: responsiveFontSize(20),
     fontWeight: '600' as const,
-    lineHeight: 28,
+    lineHeight: responsiveFontSize(28),
   },
   body: {
-    fontSize: 16,
+    fontSize: responsiveFontSize(16),
     fontWeight: 'normal' as const,
-    lineHeight: 24,
+    lineHeight: responsiveFontSize(24),
   },
   bodySmall: {
-    fontSize: 14,
+    fontSize: responsiveFontSize(14),
     fontWeight: 'normal' as const,
-    lineHeight: 20,
+    lineHeight: responsiveFontSize(20),
   },
   caption: {
-    fontSize: 12,
+    fontSize: responsiveFontSize(12),
     fontWeight: 'normal' as const,
-    lineHeight: 16,
+    lineHeight: responsiveFontSize(16),
   },
   button: {
-    fontSize: 16,
+    fontSize: responsiveFontSize(16),
     fontWeight: '600' as const,
-    lineHeight: 24,
+    lineHeight: responsiveFontSize(24),
   },
 } as const;
 

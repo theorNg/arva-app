@@ -17,6 +17,7 @@ import { Feather } from '@expo/vector-icons';
 import { colors, spacing } from '../theme/colors';
 import { typography } from '../theme/typography';
 import { useAuthStore } from '../store/useAuthStore';
+import { getSafeAreaPadding, responsiveValues } from '../theme/responsive';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     justifyContent: 'center',
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: getSafeAreaPadding().horizontal,
   },
   keyboardView: {
     flex: 1,
@@ -173,8 +174,8 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: colors.card,
-    borderRadius: 16,
-    padding: spacing.xl,
+    borderRadius: responsiveValues.cardBorderRadius,
+    padding: responsiveValues.cardPadding,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
