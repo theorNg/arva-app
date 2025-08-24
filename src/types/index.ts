@@ -42,4 +42,31 @@ export interface BatteryState {
   data: BatteryData | null;
   isLoading: boolean;
   error: string | null;
+}
+
+// Chart data types
+export interface ChartDataPoint {
+  label: string;
+  value: number;
+}
+
+export interface DailyEnergyData {
+  date: string;
+  energy: number;
+}
+
+export interface PowerDataPoint {
+  time: number; // minutes
+  power: number; // kW
+}
+
+export interface MonthlyReportData {
+  averagePower: ChartDataPoint[];
+  totalEnergy: ChartDataPoint[];
+}
+
+export interface ChartData {
+  monthlyReport: MonthlyReportData;
+  dailyEnergy: DailyEnergyData[];
+  powerTime: PowerDataPoint[];
 } 

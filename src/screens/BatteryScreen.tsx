@@ -13,11 +13,14 @@ import { colors, spacing } from '../theme/colors';
 import { typography } from '../theme/typography';
 import { ProgressBar } from '../components/ProgressBar';
 import { AnimatedBarChart } from '../components/AnimatedBarChart';
+import { CircularProgressChart } from '../components/CircularProgressChart';
 import { useBatteryStore } from '../store/useBatteryStore';
 import { getSafeAreaPadding, responsiveValues } from '../theme/responsive';
+import { useI18n } from '../i18n/i18n';
 
 export const BatteryScreen: React.FC = () => {
   const { data, isLoading, error, fetchBatteryData } = useBatteryStore();
+  const { t } = useI18n();
 
   useEffect(() => {
     fetchBatteryData();
@@ -48,7 +51,7 @@ export const BatteryScreen: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.accent} />
-          <Text style={styles.loadingText}>Loading battery data...</Text>
+          <Text style={styles.loadingText}>{t('battery.loading')}</Text>
         </View>
       </SafeAreaView>
     );
@@ -60,7 +63,7 @@ export const BatteryScreen: React.FC = () => {
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{error}</Text>
           <TouchableOpacity style={styles.retryButton} onPress={fetchBatteryData}>
-            <Text style={styles.retryButtonText}>Retry</Text>
+            <Text style={styles.retryButtonText}>{t('battery.retry')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -72,7 +75,7 @@ export const BatteryScreen: React.FC = () => {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Battery health</Text>
+          <Text style={styles.title}>{t('battery.title')}</Text>
           <TouchableOpacity style={styles.menuButton} accessibilityLabel="Menu">
             <Feather name="more-vertical" size={24} color={colors.textPrimary} />
           </TouchableOpacity>
@@ -80,25 +83,23 @@ export const BatteryScreen: React.FC = () => {
 
         {/* Battery Life Remaining */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Battery life remaining</Text>
+          <Text style={styles.sectionTitle}>{t('battery.lifeRemaining')}</Text>
           {renderBatteryIndicators()}
         </View>
 
         {/* Current Power */}
         <View style={styles.section}>
-          <Text style={styles.currentPowerTitle}>
-            {data?.currentPercentage || 0}%
-          </Text>
-          <Text style={styles.currentPowerSubtitle}>
-            Current power stored in the battery
-          </Text>
+          <CircularProgressChart 
+            percentage={data?.currentPercentage || 0}
+            title={t('battery.currentPower')}
+          />
         </View>
 
         {/* Device Battery Life */}
         <View style={styles.section}>
           <View style={styles.deviceRow}>
-            <Text style={styles.deviceLabel}>Smartphone</Text>
-            <Text style={styles.deviceValue}>{data?.smartphoneHours || 0} hours</Text>
+            <Text style={styles.deviceLabel}>{t('battery.smartphone')}</Text>
+            <Text style={styles.deviceValue}>{data?.smartphoneHours || 0} {t('battery.hours')}</Text>
           </View>
           <ProgressBar
             progress={Math.min((data?.smartphoneHours || 0) * 10, 100)}
@@ -106,8 +107,8 @@ export const BatteryScreen: React.FC = () => {
           />
 
           <View style={styles.deviceRow}>
-            <Text style={styles.deviceLabel}>Smartwatch</Text>
-            <Text style={styles.deviceValue}>{data?.smartwatchDays || 0} days</Text>
+            <Text style={styles.deviceLabel}>{t('battery.smartwatch')}</Text>
+            <Text style={styles.deviceValue}>{data?.smartwatchDays || 0} {t('battery.days')}</Text>
           </View>
           <ProgressBar
             progress={Math.min((data?.smartwatchDays || 0) * 25, 100)}
@@ -115,17 +116,19 @@ export const BatteryScreen: React.FC = () => {
           />
         </View>
 
+
+
         {/* Last 30 Days Chart */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Last 30 days</Text>
+          <Text style={styles.sectionTitle}>{t('battery.last30Days')}</Text>
           <View style={styles.chartContainer}>
             {data?.history && data.history.length > 0 ? (
               <AnimatedBarChart data={data.history} />
             ) : (
               <View style={styles.chartPlaceholder}>
-                <Text style={styles.chartPlaceholderText}>No data available</Text>
+                <Text style={styles.chartPlaceholderText}>{t('battery.noData')}</Text>
                 <Text style={styles.chartPlaceholderSubtext}>
-                  Battery history will appear here
+                  {t('battery.noDataSubtext')}
                 </Text>
               </View>
             )}

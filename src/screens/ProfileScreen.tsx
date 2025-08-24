@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -14,18 +14,23 @@ import { typography } from '../theme/typography';
 import { Avatar } from '../components/Avatar';
 import { MenuItem } from '../components/MenuItem';
 import { useAuthStore } from '../store/useAuthStore';
-
-const menuItems = [
-  { title: 'Personal Information', icon: 'user' as const },
-  { title: 'Change password', icon: 'lock' as const },
-  { title: 'Walking performance', icon: 'activity' as const },
-  { title: 'Cycling performance', icon: 'trending-up' as const },
-  { title: 'FAQ', icon: 'help-circle' as const },
-  { title: 'Contact us', icon: 'message-circle' as const },
-];
+import { useI18n } from '../i18n/i18n';
+import { LanguageSelector } from '../components/LanguageSelector';
 
 export const ProfileScreen: React.FC = () => {
   const { user, logout } = useAuthStore();
+  const { t } = useI18n();
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+
+  const menuItems = [
+    { title: t('profile.personalInfo'), icon: 'user' as const },
+    { title: t('profile.changePassword'), icon: 'lock' as const },
+    { title: t('profile.language'), icon: 'globe' as const },
+    { title: t('profile.walkingPerformance'), icon: 'activity' as const },
+    { title: t('profile.cyclingPerformance'), icon: 'trending-up' as const },
+    { title: t('profile.faq'), icon: 'help-circle' as const },
+    { title: t('profile.contactUs'), icon: 'message-circle' as const },
+  ];
 
   const handleLogout = () => {
     Alert.alert(
@@ -46,8 +51,12 @@ export const ProfileScreen: React.FC = () => {
   };
 
   const handleMenuItemPress = (title: string) => {
-    // Handle menu item press - for now just show an alert
-    Alert.alert('Menu Item', `${title} pressed`);
+    if (title === t('profile.language')) {
+      setShowLanguageSelector(true);
+    } else {
+      // Handle other menu item press - for now just show an alert
+      Alert.alert('Menu Item', `${title} pressed`);
+    }
   };
 
   return (
@@ -55,7 +64,7 @@ export const ProfileScreen: React.FC = () => {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>My profile</Text>
+          <Text style={styles.title}>{t('profile.title')}</Text>
         </View>
 
         {/* User Info Card */}
@@ -99,6 +108,12 @@ export const ProfileScreen: React.FC = () => {
       >
         <Feather name="log-out" size={24} color={colors.background} />
       </TouchableOpacity>
+
+      {/* Language Selector Modal */}
+      <LanguageSelector
+        visible={showLanguageSelector}
+        onClose={() => setShowLanguageSelector(false)}
+      />
     </SafeAreaView>
   );
 };
